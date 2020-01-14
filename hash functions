@@ -1,0 +1,46 @@
+#include<stdio.h>
+#include"a4.h"
+#include<ctype.h>
+#include<string.h>
+
+
+int hash1(char *string , int hash_size)
+{
+    unsigned long sum = 0;         /*  function 1 by multiplying by prime to reduce collision  */
+    unsigned const char *us;
+    us = (unsigned const char *) string;
+
+    sum = 7;
+    while(*us != '\0')
+    {
+         sum = *us * sum * 31;
+         us++;
+    }
+   return (sum % hash_size);
+}
+
+int hash2(char *string , int hash_size)
+{
+   unsigned long hash = 0;    /*  Function 2 and 3 uses bit shifting  */
+   int c;
+
+   while((c = *string++))
+   {
+        hash = c + (hash << 6) + (hash << 16) - hash;
+   }
+   return hash % hash_size;
+}
+
+int hash3(char *string , int hash_size)
+{
+   unsigned long hash = 0;
+   int c;
+
+   while((c = *string++))
+   {
+       hash = (c + (hash << 6)) * 31  + ((hash << 16) - hash) * 7;
+   }
+    return hash % hash_size;
+}
+
+
