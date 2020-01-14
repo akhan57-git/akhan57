@@ -1,0 +1,162 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<math.h>
+
+int  main(int argc , char *argv[])   /* taking file name as command line parameter  */
+{
+  FILE *fptr;
+  int fsize = 0;
+  char *fcontent = NULL;
+  char ch;
+  int index;
+  char prevchar;
+  char preva;
+  char prevb;
+  char prevc;
+  char prevd;
+  char preve;
+  int word = 0;
+  int sentence = 0;
+  int syllablecount = 0;
+  float fleschindex;
+
+  if(argc<2)
+  {
+     printf("failed to open the file!\n");
+     return(1);
+  }
+
+     else
+     {
+       fptr = fopen(argv[1],"r");
+
+     if(fptr==NULL)
+     {
+        printf("no such file exists!\n");
+        return(1);
+     }
+
+     if(fptr)
+     {
+       fseek(fptr ,0 ,SEEK_END);
+       fsize = ftell(fptr);
+       rewind(fptr);
+
+       fcontent = (char*) malloc(sizeof(char) * fsize);
+
+       fseek(fptr , 0 , SEEK_SET);
+
+
+       prevchar = 'x';
+       preva = 'q';
+       prevb = 'g';
+       prevc = 'z';
+       prevd = 'n';
+       preve = 'w';
+
+     while((ch=getc(fptr))!= EOF)
+     {
+
+  /*          ****** CODE FOR COUNTING WORDS ******    */
+
+        if(ch == ' ' && prevchar!=' ')
+        {
+           ++word;
+        }
+        prevchar = ch;
+
+        if(ch == '\n')
+        {
+          word++;
+        }
+
+  /*       ******* CODE FOR COUNTING SENTENCES ******     */
+
+        if(ch == '.'  && preva !='.')
+        {
+           ++sentence;
+        }
+           preva = ch;
+
+        if(ch == '!' && prevb != '!')
+        {
+          ++sentence;
+        }
+          prevb = ch;
+
+        if(ch == ':' && prevc!= ':')
+        {
+          ++sentence;
+        }
+          prevc = ch;
+
+        if(ch == ';' && prevd!= ';')
+        {
+          ++sentence;
+        }
+          prevd = ch;
+
+        if(ch=='?' && preve!='?')
+        {
+           ++sentence;
+        }
+           preve = ch;
+
+
+       /*    *******CODE FOR COUNTING SYLLABLES *******     */
+
+       if(ch =='a'|| ch == 'e' || ch == 'i' || ch == 'o' || ch =='u' || ch =='A' || ch == 'E' || ch =='I' ||ch == 'O' || ch =='U' )
+       {
+         ch++;
+         syllablecount++;
+
+       if(ch=='a'||ch=='A'||ch=='e'||ch=='E'||ch=='i'||ch=='I'||ch=='o'||ch=='u'||ch=='U'||ch=='O')
+       {
+          syllablecount++;
+          ch++;
+       }
+       }
+
+      else
+      {
+        ch++;
+      }
+
+/*       *******CODE FOR CALCULATING FLESCHINDEX********        */
+
+  if(syllablecount!=0 && word!=0 && sentence!=0)
+  {
+    fleschindex = 206.835 -( 84.6 * (syllablecount/word)) - 1.015 * (word/sentence);
+    index = round(fleschindex);
+  }
+
+   }
+  printf("Flesch Index = ");
+  printf("%d" , index);
+  printf("\n");
+  printf("Syllable Count = ");   /*  code for printing result    */
+  printf("%d" , syllablecount);
+  printf("\n");
+  printf("Word Count = ");
+  printf("%d" , word);
+  printf("\n");
+  printf("Sentence Count = %d" , sentence);
+}
+
+getchar();
+
+  if(fcontent)           /*   freing memory   */
+  {
+    free(fcontent);
+    fcontent = NULL;
+  }
+
+fclose(fptr);
+
+}
+
+return 0;
+}
+
+/*       ###########END OF THE PROGRAM###########        */
