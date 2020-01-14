@@ -1,0 +1,144 @@
+//  CODE FOR DYNAMIC MEMORY ALLOCATION IN ARRAY          
+
+#include <stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+int createArray(int rows , int cols);
+void freeArray(int **createArray , int rows , int cols);
+
+int **createArray(int rows , int cols)       // code for allocating space for 2D array.
+{
+   int **arptr;
+   int i;
+   arptr = malloc( sizeof(int *) * rows);
+
+   if(arptr==NULL)
+   {
+      return NULL;
+   }
+   for(i=0;i<rows;i++)
+   {
+     arptr[i] =  malloc(sizeof(int) * cols);
+      if(arptr[i]=NULL)
+      {
+        return NULL;
+      }
+  }
+}
+
+void freeArray(int **createArray , int rows, int cols)   // code for freing the space.
+{
+  for(i=0;i<rows;i++)
+  {
+      free(arptr[i]);
+  }
+  free(arptr);
+}
+
+
+// CODE FOR DYNAMIC MEMORY ALLOCATION IN 2D ARRAY
+
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+int *create2DArrays(int rows , int cols);
+void set2DElement(int row , int col , int value);
+int get2DElement(int *array , int row , int col);
+void free2DArray(int *array);
+
+int *create2DArrays(int rows , int cols)
+{
+  int *arptr;
+  int i;
+  int j;
+
+  arptr = (int *) malloc(rows*cols*sizeof(int));
+
+   if(arptr = NULL)
+   {
+      return NULL;
+   }
+
+   else  {
+           return arptr;
+     }
+ }
+
+void set2DElements(int row , int col , int value)
+{
+  int cols;
+  int rows;
+  int *arptr;
+
+  for(i=0;i<rows;i++)
+  {
+  for(j=0;j<cols;j++)
+  {
+    arptr[i*cols+j] = value;
+  }
+
+  }
+    return value;
+}
+
+int get2DElements(int *array , int row , int col)
+{
+  int value;
+
+  printf("the value is being returned\n");
+  return value;
+}
+
+void free2DArray(int *array)
+{
+   free(array)
+}
+
+// CODE FOR DYNAMIC MEMORY ALLOCATION IN STRINGS
+
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+int number = 0;
+
+char **createStringArray(int number);
+void setStringArray(char **array , int index , char *string);
+char *getStringArray(char **array , int index);
+void freeStringArray(char **array , int number)
+
+char **createStringArray(int number)     // function to allocate memory for all strings.
+{
+  int i;
+  char **strary;
+  strary = malloc(sizeof(char*) * number);
+
+  for(i=0;i<number;i++)
+  {
+    strary[i] = malloc(sizeof(char) * ( strlen(strary) + 1) );
+  }
+  return strary;
+}
+
+void setStringArray(char **array , int index , char *string)   // function to store string in the array.
+{
+  printf("setting the value at required index");
+  strary[i] = string;
+
+}
+
+void *getStringArray(char **array , int index)    //  function for returning the array at particular index.
+{
+  printf("returning the string");
+  return strary[i];
+}
+
+void freeStringArray( char **array , int number)      //  function to free the memory used.
+{
+  for(i=0;i<number;i++)
+  {
+     free(strary[i])
+  }
+    free(strary)
+}
