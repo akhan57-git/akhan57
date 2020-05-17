@@ -1,0 +1,359 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<stdbool.h>
+#include<ctype.h>
+#include<time.h>
+
+#define MAX_QUESTIONS 7
+void promptPlayerForName (char[50]);                               // all function prototypes
+void printWelcomeMessage (char[50]);
+int calculateCurrentAward (int ,int);
+void popUpCurrentQuestion4choices (int);
+char askPlayerForLifeLine (void);
+void popUpCurrentQuestion2choices (int);
+char acceptPlayersFinalAnswer (void);
+bool isCorrectFinalAnswer (char, int,  char [MAX_QUESTIONS]);
+void generateRandomGreeting (char [20]);
+int  calculateReducedAward (int, int);
+
+int main()
+{
+  char allCorrectAnswers [MAX_QUESTIONS +1] = "CBCBACA";
+  char greet[20];
+  char nameForGame[50];
+  int lifeLineUsed = 0;
+  char playersResponseLifeLine;
+  int questionNumber = 1;
+  char finalAnswer;
+  int currentAwardAmount;
+  int reducedAmount;
+
+  promptPlayerForName (nameForGame);
+
+  printWelcomeMessage (nameForGame);
+
+  while (questionNumber<=MAX_QUESTIONS)
+  {
+    currentAwardAmount =
+    calculateCurrentAward(questionNumber, currentAwardAmount) ;
+    popUpCurrentQuestion4choices(currentAwardAmount) ;
+
+    if (lifeLineUsed==0)
+    {
+      playersResponseLifeLine =
+      askPlayerForLifeLine();
+
+     if (playersResponseLifeLine =='Y' || playersResponseLifeLine == 'y')
+     {
+      popUpCurrentQuestion2choices(currentAwardAmount);
+      lifeLineUsed++;
+      printf("\nReminder -  you get only 1 50-50 lifeline -  and you are using it now\n\n");
+    }
+  }
+
+   finalAnswer = acceptPlayersFinalAnswer ();
+
+   if (isCorrectFinalAnswer (finalAnswer,
+   questionNumber, allCorrectAnswers) )
+   {
+     generateRandomGreeting(greet);
+     printf("%s you just won $ %d\n", greet, currentAwardAmount);
+
+  if(questionNumber < MAX_QUESTIONS)
+  {
+     printf(" Let us play the next question now\n\n");
+  }
+}
+
+else  
+{
+   printf("oops - that was incorrect.");
+   reducedAmount = calculateReducedAward(questionNumber, currentAwardAmount);
+   printf(" you still won $%d. well done.\n\n", reducedAmount);
+   questionNumber = MAX_QUESTIONS;
+}
+    questionNumber++;
+  }
+    printf(" it was fun playing with you\n\n");
+ return 0;
+}
+
+void promptPlayerForName(char nameForGame[] )         //  function defination for taking players name.
+{
+  char Firstname [30];
+  char Secondname [30];
+  printf("Enter your first Name: ");
+  scanf("%s" , Firstname);
+  printf("Enter your second name: ");
+  scanf("%s", Secondname);
+  strcat(Firstname , Secondname);
+  strcpy(nameForGame, Firstname);
+}
+
+void printWelcomeMessage(char nameForGame[])         // function defination for printing the message.
+{
+
+ int i,j;
+   for(i=0;i<3;i++)
+   {
+   for(j=0;j<=i;j++)
+   {
+     printf("*");
+   }
+   printf("\n");
+ }
+
+ for(i=0;i<strlen(nameForGame)+8;i++)
+ {
+    printf("*");
+ }
+  printf("\n");
+  printf("welcome you ");
+  printf("%s\n", nameForGame);
+  printf("Let us play WDWM!\n");
+
+  for(i=0;i<strlen(nameForGame)+8;i++)
+  {
+    printf("*");
+  }
+  printf("\n");
+  for(i=3;i>0;i--)
+  {
+  for(j=0;j<i;j++)
+  {
+      printf("*");
+  }
+    printf("\n");
+  }
+}
+
+int calculateCurrentAward(int questionNumber, int awardPreviousQuestion)    // function defination for calculating the award.
+{
+    int currentAwardAmount;
+
+     if(questionNumber==1) {
+     currentAwardAmount =100;
+     }
+    else if(questionNumber==2) {
+      currentAwardAmount = 5*awardPreviousQuestion;
+    }
+    else if(questionNumber==3)  {
+      currentAwardAmount = 2*awardPreviousQuestion;
+    }
+    else if(questionNumber==4)  {
+      currentAwardAmount = 5*awardPreviousQuestion;
+    }
+    else if(questionNumber==5) {
+      currentAwardAmount = 2*awardPreviousQuestion;
+    }
+    else if(questionNumber==6)  {
+      currentAwardAmount = 5*awardPreviousQuestion;
+    }
+     else {
+      currentAwardAmount = 2*awardPreviousQuestion;
+     }
+
+return currentAwardAmount;
+}
+
+void popUpCurrentQuestion4choices(int currentAwardAmount)     // function defination for asking the questions.
+{
+   if(currentAwardAmount==100)  {
+
+  printf("Here is the 100$ question\n");
+  printf("\n");
+  printf("which of the following programming language is taught\n");
+  printf("in university of Guelph in cis1500\n");
+  printf("A. Python                                            B. Cobra\n");
+  printf("C. C                                                 D. Java\n");
+  }
+
+ else  if(currentAwardAmount==500)
+ {
+  printf( "Here is the $500 question\n");
+  printf("\n");
+  printf("which canadian chain has first opened in Hamilton in 1964\n");
+  printf("A. MCdonalds                                         B. Tim Hortons\n");
+  printf("C. Wendy                                             D. Mr Sub\n");
+ }
+
+  else if(currentAwardAmount==1000)
+  {
+  printf(" Here is $1000 question\n");
+  printf("\n");
+  printf("which is Canada's national sport\n");
+  printf("A. Hockey                                            B. Lacrosse\n");
+  printf("C. Hockey and Lacrosse                               D. Baseball\n");
+  }
+ else if(currentAwardAmount==5000)
+ {
+  printf(" Here is $5000 question\n");
+  printf("\n");
+  printf("Which Canadian city ranked as worlds most educated city\n");
+  printf("\n");
+  printf("A. Montreal                                          B. Ottawa\n");
+  printf("C. Vancouver                                         D. Toronto\n");
+ }
+
+ else if(currentAwardAmount==10000)
+ {
+  printf(" Here is 10000$ question\n");
+  printf("\n");
+  printf("What is Canadas highest mountain\n");
+  printf("A. Mount logan, Yokun                                B. Whistler mountain, BC\n");
+  printf("C. Mount Tremblant, Quebec                           D. Tip Top Mountain Ontario\n");
+ }
+ else if(currentAwardAmount==50000)
+ {
+  printf(" Here is $50000 question\n");
+  printf("\n");
+  printf("What is easternmost provience of canada\n");
+  printf(" A.Ontario                                           B. Prince Edward Island\n");
+  printf("C. Newfoundland                                      D. Nova Scotia\n");
+  }
+
+
+ else if(currentAwardAmount==100000)
+ {
+  printf(" Here is $100000 question\n");
+  printf("\n");
+  printf("The southernmost point of mainland Canada is called point pelle. What provience is it in?\n");
+  printf(" A.Ontario                                           B. Quebec\n");
+  printf(" C. Newfoundland                                     D.  Nova Scotia\n");
+
+ }
+
+ else {
+   printf("thats all\n");
+ }
+}
+
+char askPlayerForLifeLine()          // function defination for lifeline.
+{
+  
+   char playersResponseLifeLine;
+
+  printf("Would you like to use a lifeline (50-50)\n");
+  printf("Enter 'y' , 'Y' or 'n' , 'N':");
+  scanf(" %c",&playersResponseLifeLine);
+  printf("\n");
+
+      while((playersResponseLifeLine!='Y')&&(playersResponseLifeLine!='y')&&(playersResponseLifeLine!='n')&&(playersResponseLifeLine!='N'))
+      {
+
+         printf(" invalid option entered\n");
+         printf(" Enter 'y' , 'Y' or 'n' , 'N':\n");
+         scanf(" %c" ,&playersResponseLifeLine);
+      }
+
+ return playersResponseLifeLine;
+
+}
+
+
+ char acceptPlayersFinalAnswer()       // function defination for accepting players response.
+{
+  char finalans;
+  printf("enter your final answer(A,B,C OR D) here:");
+  scanf(" %c", &finalans);
+  printf("\n");
+      while((finalans!='A')&&(finalans!='B')&&(finalans!='C')&&(finalans!='D'))
+      {
+         printf("invalid choice please enter again\n");
+         printf("enter your final answer(A,B,C,D) here:");
+         scanf(" %c" , &finalans);
+      }
+
+  return finalans;
+
+}
+
+void popUpCurrentQuestion2choices(int currentAwardAmount)       // function defination for 2 question choices.
+{
+  switch(currentAwardAmount)  {
+
+  case 100: printf("ok- here are your 2 choices after using the 50-50 lifeline\n");
+            printf("A. Python\n");
+            printf("C. C\n");
+            break;
+  case 500: printf("ok- here are your 2 choices after using the 50-50 lifeline\n");
+            printf("B. Tim Hortons\n");
+            printf("C. Wendy\n");
+            break;
+  case 1000: printf("ok- here are your 2 choices after using the 50-50 lifeline\n");
+             printf("C. Hockey and Lacrosse\n");
+             printf("D. Baseball\n");
+             break;
+  case 5000: printf("ok- here are your 2 choices after using the 50-50 lifeline\n");
+             printf("B. Ottawa\n");
+             printf("D. Toronto\n");
+             break;
+  case 10000: printf("ok- here are your 2 choices after using the 50-50 lifeline\n");
+              printf("A. Mount logan, Yokun\n");
+              printf("B. Tip Top Mountain, ontario\n");
+              break;
+  case 50000: printf("ok- here are your 2 choices after using the 50-50 lifeline\n");
+              printf("A. ontario\n");
+              printf("C. Newfoundland\n");
+              break;
+  case 100000: printf("ok- here are your 2 choices after using the 50-50 lifeline\n");
+               printf("A. ontario\n");
+               printf("B. Quebec\n");
+               break;
+         }
+}
+
+bool isCorrectFinalAnswer(char finalAnswer, int questionNumber	, char allCorrectAnswers [MAX_QUESTIONS])  // function defination for checking ans.
+{
+    if(allCorrectAnswers[questionNumber-1]==finalAnswer)
+       return 1;
+
+      else
+     return 0;
+
+}
+
+
+int calculateReducedAward(int questionNumber, int currentAwardAmount) // function defination for calculating reduced award.
+{
+    if(questionNumber==1)
+     currentAwardAmount = 100;
+    else if(questionNumber%2==0)
+      currentAwardAmount = currentAwardAmount/5;
+    else
+       currentAwardAmount = currentAwardAmount/2;
+
+     return currentAwardAmount ;
+}
+
+
+void generateRandomGreeting(char greet[20])    // function defination for generating greetings.
+{
+
+ int x;
+
+   srand(time(NULL));
+
+   x =( rand() % 5) + 1;
+
+            if(x==1)
+              strcpy(greet," bravo");
+
+             else if(x==2)
+             strcpy(greet, "congrats");
+
+             else if(x==3)
+             strcpy(greet," WellDone");
+
+             else if(x==4)
+             strcpy(greet, "very nice");
+
+            else
+             strcpy(greet," proud of you");
+
+        return;
+ }
+
+    // end of the program.
+
